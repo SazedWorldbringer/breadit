@@ -4,6 +4,7 @@ import { Inter } from "next/font/google"
 import { cn } from '@/lib/utils'
 
 import Navbar from '@/components/navbar'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata = {
   title: 'Breadit',
@@ -28,6 +29,7 @@ export default function RootLayout({
         <div className='container max-w-7xl mx-auto h-full pt-12'>
           {children}
         </div>
+        <Toaster />
       </body>
     </html>
   )
