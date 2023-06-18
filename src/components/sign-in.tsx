@@ -1,5 +1,7 @@
-import Link from "next/link"
-import { Icons } from "./icons"
+import Link from 'next/link'
+
+import { Icons } from '@/components/icons'
+import UserAuthForm from '@/components/user-auth-form'
 
 const SignIn = ({ }) => {
 	return (
@@ -12,6 +14,8 @@ const SignIn = ({ }) => {
 				<p className='text-sm max-w-xs mx-auto'>
 					By continuing, you are setting up a Breadit account and agreeing to our User Agreement and Privacy Policy
 				</p>
+
+				<UserAuthForm />
 
 				<p className='px-8 text-center text-sm text-zinc-700'>
 					New to Breadit?{' '}
