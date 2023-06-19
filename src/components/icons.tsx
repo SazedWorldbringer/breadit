@@ -1,5 +1,5 @@
 import { LucideProps } from "lucide-react";
-import { SignalLowIcon } from 'lucide-react'
+import { User2 } from 'lucide-react'
 
 export const Icons = {
 	logo: (props: LucideProps) => (
@@ -52,4 +52,5 @@ export const Icons = {
 			<path d='M1 1h22v22H1z' fill='none' />
 		</svg>
 	),
+	user: User2
 }
