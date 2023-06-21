@@ -1,4 +1,4 @@
-import { ChevronLeft, LucideProps, X, User2 } from "lucide-react";
+import { ChevronLeft, LucideProps, X, User2, HomeIcon } from "lucide-react";
 
 export const Icons = {
 	logo: (props: LucideProps) => (
@@ -53,5 +53,6 @@ export const Icons = {
 	),
 	user: User2,
 	x: X,
-	back: ChevronLeft
+	back: ChevronLeft,
+	home: HomeIcon
 }
