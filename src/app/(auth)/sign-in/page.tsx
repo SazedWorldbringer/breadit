@@ -1,9 +1,10 @@
 import { FC } from 'react';
 import Link from 'next/link';
 
-import { buttonVariants } from '@/components/ui/Button';
+import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import SignIn from '@/components/sign-in';
+import { Icons } from '@/components/icons';
 
 const page: FC = ({ }) => {
 	return (
@@ -16,6 +17,7 @@ const page: FC = ({ }) => {
 						'self-start -mt-20'
 					)}
 				>
+					<Icons.back className='mr-2 h-4 w-4' />
 					Home
 				</Link>
 
