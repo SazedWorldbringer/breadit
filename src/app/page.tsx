@@ -1,4 +1,8 @@
+import Link from "next/link";
+
 import { Icons } from "@/components/icons";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   return (
@@ -18,10 +22,17 @@ export default function Home() {
 
           <div className='-my-3 divide-y divide-input px-6 py-4 text-sm leading-6'>
             <div className='flex justify-between gap-x-4 py-3'>
-            <p className='text-zinc-500'>
-            Your personal Breadit homepage. Come here to check in with your favorite communities.
-            </p>
+              <p className='text-zinc-500'>
+                Your personal Breadit homepage. Come here to check in with your favorite communities.
+              </p>
             </div>
+
+            <Link
+              className={buttonVariants({
+                className: 'w-full mt-4 mb-6'
+              })}
+              href='/r/create'
+            >Create community</Link>
           </div>
         </div>
       </div>
