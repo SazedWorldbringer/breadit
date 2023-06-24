@@ -9,7 +9,7 @@ import axios, { AxiosError } from 'axios'
 import { CreateSubredditPayload } from '@/lib/validators/subreddit'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { toast } from '@/components/ui/use-toast'
+import { toast } from '@/hooks/use-toast'
 import { useCustomToast } from '@/hooks/use-custom-toast'
 
 const page = () => {
