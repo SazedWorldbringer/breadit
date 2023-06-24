@@ -46,6 +46,12 @@ const page = () => {
 				if (err.response?.status === 401) {
 					return loginToast()
 				}
+
+				toast({
+					title: 'Uh oh! Something went wrong.',
+					description: 'There was an error creating your subreddit.',
+					variant: 'destructive'
+				})
 			}
 		},
 	})
