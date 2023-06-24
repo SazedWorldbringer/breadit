@@ -42,6 +42,10 @@ const page = () => {
 						variant: 'destructive'
 					})
 				}
+
+				if (err.response?.status === 401) {
+					return loginToast()
+				}
 			}
 		},
 	})
