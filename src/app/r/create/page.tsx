@@ -54,6 +54,9 @@ const page = () => {
 				})
 			}
 		},
+		onSuccess: (data) => {
+			router.push(`/r/${data}`)
+		}
 	})
 
 	return (
