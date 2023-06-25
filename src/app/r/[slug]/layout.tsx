@@ -41,6 +41,14 @@ const Layout = async ({
 
 	if (!subreddit) return notFound()
 
+	const memberCount = await db.subscription.count({
+		where: {
+			subreddit: {
+				name: slug
+			}
+		}
+	})
+
 	return (
 		<div className='sm:container max-w-7xl mx-auto h-full pt-12'>
 			<div>
