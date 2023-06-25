@@ -1,7 +1,8 @@
-import { notFound } from "next/navigation"
+import { notFound } from 'next/navigation'
+import { format } from 'date-fns'
 
-import { getAuthSession } from "@/lib/auth"
-import { db } from "@/lib/db"
+import { getAuthSession } from '@/lib/auth'
+import { db } from '@/lib/db'
 
 const Layout = async ({
 	children, params: { slug },
@@ -48,8 +49,34 @@ const Layout = async ({
 
 					<div className='hidden md:block overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last'>
 						<div className='px-6 py-4'>
-							<p className="font-semibold py-3">About r/{slug}</p>
+							<p className='font-semibold py-3'>About r/{slug}</p>
 						</div>
+
+						<dl className='divide-y divide-gray-100 px-6 py-4 text-sm leading-6 bg-white'>
+							<div className='flex justify-between gap-x-4 py-3'>
+								<dt className='text-gray-500'>Created</dt>
+								<dd className='text-gray-700'>
+									<time dateTime={subreddit.createdAt.toDateString()}>
+										{format(subreddit.createdAt, 'MMMM dd, yyyy')}
+									</time>
+								</dd>
+							</div>
+
+							<div className='flex justify-between gap-x-4 py-3'>
+								<dt className='text-gray-500'>Members</dt>
+								<dd className='text-gray-700'>
+									<div className='text-gray-900'>{memberCount}</div>
+								</dd>
+							</div>
+
+							{subreddit.creatorId === session?.user.id ? (
+								<div className='flex justify-between gap-x-4 py-3'>
+									<p className='text-gray-500'>You created this community</p>
+								</div>
+							) : (
+								null
+							)}
+						</dl>
 					</div>
 				</div>
 			</div>
