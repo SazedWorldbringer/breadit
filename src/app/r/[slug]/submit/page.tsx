@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 
 import { db } from '@/lib/db'
 import { Button } from '@/components/ui/button'
+import Editor from '@/components/editor'
 
 interface PageProps {
 	params: {
@@ -31,6 +32,8 @@ const page = async ({ params }: PageProps) => {
 					</p>
 				</div>
 			</div>
+
+			<Editor subredditId={subreddit.id} />
 
 			<div className='w-full flex justify-end'>
 				<Button type='submit' className='w-full' form='subreddit-post-form'>
