@@ -4,6 +4,8 @@ import { format } from 'date-fns'
 import { getAuthSession } from '@/lib/auth'
 import { db } from '@/lib/db'
 import SubscribeLeaveToggle from '@/components/subscribe-leave-toggle'
+import Link from 'next/link'
+import { buttonVariants } from '@/components/ui/button'
 
 const Layout = async ({
 	children, params: { slug },
@@ -83,12 +85,22 @@ const Layout = async ({
 									<p className='text-gray-500'>You created this community</p>
 								</div>
 							) : (
-							<SubscribeLeaveToggle
-								subredditId={subreddit.id}
-								subredditName={subreddit.name}
-								isSubscribed={isSubscribed}
-							/>
+								<SubscribeLeaveToggle
+									subredditId={subreddit.id}
+									subredditName={subreddit.name}
+									isSubscribed={isSubscribed}
+								/>
 							)}
+
+							<Link
+								className={buttonVariants({
+									variant: 'outline',
+									className: 'w-full mb-6'
+								})}
+								href={`r/${slug}/submit`}
+							>
+								Create post
+							</Link>
 						</dl>
 					</div>
 				</div>
