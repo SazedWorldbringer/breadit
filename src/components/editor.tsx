@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import type EditorJS from '@editorjs/editorjs';
 
 import { PostCreationRequest, PostValidator } from '@/lib/validators/post';
+import { uploadFiles } from '@/lib/uploadthing';
 
 interface editorProps {
 	subredditId: string
@@ -55,6 +56,23 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 						class: LinkTool,
 						config: {
 							endpoint: '/api/link',
+						},
+					},
+					image: {
+						class: ImageTool,
+						config: {
+							uploader: {
+								async uploadByFile(file: File) {
+									const [res] = await uploadFiles([file], 'imageUploader')
+
+									return {
+										success: 1,
+										file: {
+											url: res.fileUrl,
+										},
+									}
+								},
+							},
 						},
 					},
 				},
