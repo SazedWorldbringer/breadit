@@ -83,17 +83,11 @@ const Layout = async ({
 									<p className='text-gray-500'>You created this community</p>
 								</div>
 							) : (
-								null
-							)}
-
-							{subreddit.creatorId !== session?.user.id ? (
-								<SubscribeLeaveToggle
-									subredditId={subreddit.id}
-									subredditName={subreddit.name}
-									isSubscribed={isSubscribed}
-								/>
-							) : (
-								null
+							<SubscribeLeaveToggle
+								subredditId={subreddit.id}
+								subredditName={subreddit.name}
+								isSubscribed={isSubscribed}
+							/>
 							)}
 						</dl>
 					</div>
