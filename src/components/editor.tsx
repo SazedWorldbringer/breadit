@@ -30,6 +30,7 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 
 	const ref = useRef<EditorJS>()
 	const [isMounted, setIsMounted] = useState<boolean>(false)
+	const _titleRef = useRef<HTMLTextAreaElement>(null)
 
 	// set isMounted to true if we are on the client side (window is undefined on the server side)
 	useEffect(() => {
@@ -99,15 +100,21 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 
 			setTimeout(() => {
 				// set focus to title
-			})
+				_titleRef.current?.focus()
+			}, 0)
 		}
 
 		if (isMounted) {
 			init()
 
-			return () => {}
+			return () => {
+				ref.current?.destroy()
+				ref.current = undefined
+			}
 		}
 	}, [isMounted, initializeEditor])
+
+	const { ref: titleRef, ...rest } = register('title')
 
 	return (
 		<div className='w-full p-4 bg-zinc-50 rounded-lg border border-zinc-200'>
@@ -118,6 +125,13 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 			>
 				<div className='prose prose-stone dark:prose-invert'>
 					<TextareaAutosize
+						ref={(e) => {
+							titleRef(e)
+
+							// @ts-ignore
+							_titleRef.current = e
+						}}
+						{...rest}
 						placeholder='Title'
 						className='w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none'
 					/>
