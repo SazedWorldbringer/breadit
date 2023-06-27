@@ -75,6 +75,11 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 							},
 						},
 					},
+					list: List,
+					code: Code,
+					InlineCode: InlineCode,
+					table: Table,
+					embed: Embed
 				},
 			})
 		}
