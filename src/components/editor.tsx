@@ -129,6 +129,10 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 		}
 	}, [isMounted, initializeEditor])
 
+	if(!isMounted) {
+		return null
+	}
+
 	const { ref: titleRef, ...rest } = register('title')
 
 	return (
