@@ -33,13 +33,6 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 	const [isMounted, setIsMounted] = useState<boolean>(false)
 	const _titleRef = useRef<HTMLTextAreaElement>(null)
 
-	// set isMounted to true if we are on the client side (window is undefined on the server side)
-	useEffect(() => {
-		if (typeof window !== 'undefined') {
-			setIsMounted(true)
-		}
-	}, [])
-
 	const initializeEditor = useCallback(async () => {
 		const EditorJS = (await import('@editorjs/editorjs')).default
 		const Header = (await import('@editorjs/header')).default
@@ -95,6 +88,14 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 		}
 	}, [])
 
+	// set isMounted to true if we are on the client side (window is undefined on the server side)
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			setIsMounted(true)
+		}
+	}, [])
+
+	// error handling
 	useEffect(() => {
 		if (Object.keys(errors).length) {
 			for (const [_key, value] of Object.entries(errors)) {
@@ -107,6 +108,7 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 		}
 	}, [errors])
 
+	// initialize the editor if it's mounted
 	useEffect(() => {
 		const init = async () => {
 			await initializeEditor()
