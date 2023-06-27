@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useCallback, useRef } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -29,6 +29,14 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 	})
 
 	const ref = useRef<EditorJS>()
+	const [isMounted, setIsMounted] = useState<boolean>(false)
+
+	// set isMounted to true if we are on the client side (window is undefined on the server side)
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			setIsMounted(true)
+		}
+	}, [])
 
 	const initializeEditor = useCallback(async () => {
 		const EditorJS = (await import('@editorjs/editorjs')).default
@@ -85,6 +93,22 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 		}
 	}, [])
 
+	useEffect(() => {
+		const init = async () => {
+			await initializeEditor()
+
+			setTimeout(() => {
+				// set focus to title
+			})
+		}
+
+		if (isMounted) {
+			init()
+
+			return () => {}
+		}
+	}, [isMounted, initializeEditor])
+
 	return (
 		<div className='w-full p-4 bg-zinc-50 rounded-lg border border-zinc-200'>
 			<form
@@ -94,9 +118,10 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 			>
 				<div className='prose prose-stone dark:prose-invert'>
 					<TextareaAutosize
-						placeholder='title'
+						placeholder='Title'
 						className='w-full resize-none appearance-none overflow-hidden bg-transparent text-5xl font-bold focus:outline-none'
 					/>
+					<div id='editor' className='min-h-[500px]' />
 				</div>
 			</form>
 		</div>
