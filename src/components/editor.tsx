@@ -8,6 +8,7 @@ import type EditorJS from '@editorjs/editorjs';
 
 import { PostCreationRequest, PostValidator } from '@/lib/validators/post';
 import { uploadFiles } from '@/lib/uploadthing';
+import { toast } from '@/hooks/use-toast';
 
 interface editorProps {
 	subredditId: string
@@ -95,6 +96,18 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 	}, [])
 
 	useEffect(() => {
+		if (Object.keys(errors).length) {
+			for (const [_key, value] of Object.entries(errors)) {
+				toast({
+					title: 'Uh oh! Something went wrong.',
+					description: (value as { message: string }).message,
+					variant: 'destructive'
+				})
+			}
+		}
+	}, [errors])
+
+	useEffect(() => {
 		const init = async () => {
 			await initializeEditor()
 
@@ -121,7 +134,7 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 			<form
 				id='subreddit-post-form'
 				className='w-fit'
-				onSubmit={() => { }}
+				onSubmit={() => handleSubmit((e) => { })}
 			>
 				<div className='prose prose-stone dark:prose-invert'>
 					<TextareaAutosize
