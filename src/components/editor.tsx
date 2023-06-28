@@ -188,7 +188,7 @@ const Editor: FC<editorProps> = ({ subredditId }) => {
 			<form
 				id='subreddit-post-form'
 				className='w-fit'
-				onSubmit={() => handleSubmit(onSubmit)}
+				onSubmit={handleSubmit(onSubmit)}
 			>
 				<div className='prose prose-stone dark:prose-invert'>
 					<TextareaAutosize
