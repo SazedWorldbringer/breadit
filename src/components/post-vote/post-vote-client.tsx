@@ -1,12 +1,16 @@
 'use client'
 
-import { useCustomToast } from '@/hooks/use-custom-toast';
-import { usePrevious } from '@mantine/hooks';
-import { VoteType } from '@prisma/client';
 import { FC, useEffect, useState } from 'react';
-import { Button } from '../ui/button';
+import { usePrevious } from '@mantine/hooks';
+import { useMutation } from '@tanstack/react-query';
+
 import { Icons } from '../icons';
 import { cn } from '@/lib/utils';
+import { useCustomToast } from '@/hooks/use-custom-toast';
+import { Button } from '@/components/ui/button';
+import { VoteType } from '@prisma/client';
+import { PostVoteRequest } from '@/lib/validators/vote';
+import axios from 'axios';
 
 interface PostVoteClientProps {
 	postId: string
@@ -27,6 +31,17 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
 	useEffect(() => {
 		setCurrentVote(initialVote)
 	}, [initialVote])
+
+	const { } = useMutation({
+		mutationFn: async (voteType: VoteType) => {
+			const payload: PostVoteRequest = {
+				postId,
+				voteType,
+			}
+
+			await axios.patch('/api/subreddit/post/vote', payload)
+		}
+	})
 
 	return (
 		<div className='flex sm:flex-col gap-4 sm:gap-0 pr-6 sm:w-20 pb-4 sm:pb-0'>
