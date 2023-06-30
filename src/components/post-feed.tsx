@@ -37,7 +37,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
 
 		{
 			getNextPageParam: (_, pages) => {
-				return ++pages.length
+				return pages.length + 1
 			},
 			initialData: { pages: [initialPosts], pageParams: [1] }
 		}
@@ -63,20 +63,21 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
 					return (
 						<li key={post.id} ref={ref}>
 							<Post
-								subredditName={post.subreddit.name}
 								post={post}
 								commentAmt={post.comments.length}
-								currentVote={currentVote}
+								subredditName={post.subreddit.name}
 								votesAmt={votesAmt}
+								currentVote={currentVote}
 							/>
 						</li>
 					)
 				} else {
 					return (
 						<Post
-							subredditName={post.subreddit.name}
+							key={post.id}
 							post={post}
 							commentAmt={post.comments.length}
+							subredditName={post.subreddit.name}
 							currentVote={currentVote}
 							votesAmt={votesAmt}
 						/>
