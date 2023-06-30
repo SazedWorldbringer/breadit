@@ -24,19 +24,24 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
 
 	const { data: session } = useSession()
 
-	const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(['infinite-query'], async ({ pageParam = 1 }) => {
-		const query =
-			`/api/posts?limit=${INFINITE_SCROLLING_PAGINATION_RESULTS}&page=${pageParam}` +
-			(!!subredditName && `&subredditName=${subredditName}`)
+	const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+		['infinite-query'],
+		async ({ pageParam = 1 }) => {
+			const query =
+				`/api/posts?limit=${INFINITE_SCROLLING_PAGINATION_RESULTS}&page=${pageParam}` +
+				(!!subredditName && `&subredditName=${subredditName}`)
 
-		const { data } = await axios.get(query)
-		return data as ExtendedPost[]
-	}, {
-		getNextPageParam: (_, pages) => {
-			return ++pages.length
+			const { data } = await axios.get(query)
+			return data as ExtendedPost[]
 		},
-		initialData: { pages: [initialPosts], pageParams: [1] }
-	})
+
+		{
+			getNextPageParam: (_, pages) => {
+				return ++pages.length
+			},
+			initialData: { pages: [initialPosts], pageParams: [1] }
+		}
+	)
 
 	const posts = data?.pages.flatMap((page) => page) ?? initialPosts
 
@@ -44,14 +49,17 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
 		<ul className='flex flex-col col-span-2 space-y-6'>
 			{posts.map((post, index) => {
 				const votesAmt = post.votes.reduce((acc, vote) => {
-					if (vote.type === 'UP') return ++acc
-					if (vote.type === 'DOWN') --acc
+					if (vote.type === 'UP') return acc + 1
+					if (vote.type === 'DOWN') acc - 1
 					return acc
 				}, 0)
 
-				const currentVote = post.votes.find((vote) => vote.userId === session?.user.id)
+				const currentVote = post.votes.find(
+					(vote) => vote.userId === session?.user.id
+				)
 
 				if (index === posts.length - 1) {
+					// add ref to the last post in the list
 					return (
 						<li key={post.id} ref={ref}>
 							<Post
@@ -64,13 +72,15 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
 						</li>
 					)
 				} else {
-					return <Post
-						subredditName={post.subreddit.name}
-						post={post}
-						commentAmt={post.comments.length}
-						currentVote={currentVote}
-						votesAmt={votesAmt}
-					/>
+					return (
+						<Post
+							subredditName={post.subreddit.name}
+							post={post}
+							commentAmt={post.comments.length}
+							currentVote={currentVote}
+							votesAmt={votesAmt}
+						/>
+					)
 				}
 			})}
 		</ul>
