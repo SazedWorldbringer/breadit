@@ -2,14 +2,19 @@ import Link from "next/link";
 
 import { Icons } from "@/components/icons";
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { getAuthSession } from "@/lib/auth";
+import GeneralFeed from "@/components/general-feed";
+import CustomFeed from "@/components/custom-feed";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getAuthSession()
+
   return (
     <>
       <h1 className='font-bold text-3xl md:text-4xl'>Your feed</h1>
       <div className='grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-x-4 py-4'>
-        {/* Feed */}
+        { /* @ts-expect-error server components */}
+        {session ? <CustomFeed /> : <GeneralFeed />}
 
         {/* Subreddit info */}
         <div className='overflow-hidden h-fit rounded-lg border border-input order-first md:order-last'>
