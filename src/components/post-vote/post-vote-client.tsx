@@ -3,14 +3,15 @@
 import { FC, useEffect, useState } from 'react';
 import { usePrevious } from '@mantine/hooks';
 import { useMutation } from '@tanstack/react-query';
+import axios, { AxiosError } from 'axios';
 
-import { Icons } from '../icons';
+import { Icons } from '@/components/icons';
 import { cn } from '@/lib/utils';
 import { useCustomToast } from '@/hooks/use-custom-toast';
 import { Button } from '@/components/ui/button';
 import { VoteType } from '@prisma/client';
 import { PostVoteRequest } from '@/lib/validators/vote';
-import axios from 'axios';
+import { toast } from '@/hooks/use-toast';
 
 interface PostVoteClientProps {
 	postId: string
@@ -40,7 +41,26 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
 			}
 
 			await axios.patch('/api/subreddit/post/vote', payload)
-		}
+		},
+		onError: (err, voteType) => {
+			if (voteType === 'UP') setVotesAmt((prev) => prev - 1)
+			else setVotesAmt((prev) => prev + 1)
+
+			// reset current vote
+			setCurrentVote(prevVote)
+
+			if (err instanceof AxiosError) {
+				if (err.response?.status === 401) {
+					return loginToast()
+				}
+			}
+
+			return toast({
+				title: 'Uh-oh! Something went wrong.',
+				description: 'Your vote was not registered. Please try again.',
+				variant: 'destructive'
+			})
+		},
 	})
 
 	return (
