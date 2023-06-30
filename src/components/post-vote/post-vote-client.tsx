@@ -61,6 +61,24 @@ const PostVoteClient: FC<PostVoteClientProps> = ({
 				variant: 'destructive'
 			})
 		},
+		// optimistic updates (giving visual indication of change right away)
+		onMutate: (type: VoteType) => {
+			// if the same vote is cast, remove the vote
+			if (currentVote === type) {
+				setCurrentVote(undefined)
+
+				if (type === 'UP') setVotesAmt((prev) => prev - 1)
+				else if (type === 'DOWN') setVotesAmt((prev) => prev + 1)
+
+			} else {
+				// handle opposite votes being cast
+				setCurrentVote(type)
+
+				if (type === 'UP') setVotesAmt((prev) => prev + (currentVote ? 2 : 1))
+				else if (type === 'DOWN') setVotesAmt((prev) => prev - (currentVote ? 2 : 1))
+
+			}
+		},
 	})
 
 	return (
