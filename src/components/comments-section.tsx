@@ -1,6 +1,7 @@
 import { getAuthSession } from '@/lib/auth'
 import { db } from '@/lib/db'
 import PostComment from '@/components/post-comment'
+import CreateComment from '@/components/create-comment'
 
 interface CommentsSectionProps {
 	postId: string
@@ -30,7 +31,7 @@ const CommentsSection = async ({ postId }: CommentsSectionProps) => {
 		<div className='flex flex-col gap-y-4 mt-4'>
 			<hr className='w-full h-px my-6' />
 
-			{/* TODO: create comment */}
+			<CreateComment postId={postId}  />
 
 			<div className='flex flex-col gap-y-6 mt-4'>
 				{comments
