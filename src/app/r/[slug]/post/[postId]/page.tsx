@@ -10,6 +10,8 @@ import { Icons } from '@/components/icons'
 import PostVoteServer from '@/components/post-vote/post-vote-server'
 import { formatTimeToNow } from '@/lib/utils'
 import EditorOutput from '@/components/editor-output'
+import { Skeleton } from '@/components/ui/skeleton'
+import CommentsSection from '@/components/comments-section'
 
 interface PageProps {
 	params: {
@@ -71,8 +73,12 @@ const page = async ({ params }: PageProps) => {
 					</h1>
 
 					<EditorOutput content={post?.content ?? cachedPost.content} />
-				</div>
 
+					<Suspense fallback={<Skeleton className='w-full h-[20px] rounded-full' />}>
+						{/* @ts-expect-error server component */}
+						<CommentsSection postId={post?.id ?? cachedPost.id} />
+					</Suspense>
+				</div>
 			</div>
 		</div>
 	)
