@@ -60,5 +60,6 @@ export const Icons = {
 	comments: MessageSquare,
 	upvote: ArrowBigUp,
 	downvote: ArrowBigDown,
-	spinner: Loader2
+	spinner: Loader2,
+	reply: MessageSquare
 }
