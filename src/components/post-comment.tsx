@@ -4,17 +4,19 @@ import { FC, useRef, useState } from 'react';
 import { Comment, CommentVote, User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import axios, { AxiosError } from 'axios';
 
 import UserAvatar from '@/components/user-avatar';
 import { formatTimeToNow } from '@/lib/utils';
-import CommentVotes from './comment-votes';
+import CommentVotes from '@/components/comment-votes';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useMutation } from '@tanstack/react-query';
 import { CommentRequest } from '@/lib/validators/comment';
-import axios from 'axios';
+import { useCustomToast } from '@/hooks/use-custom-toast';
+import { toast } from '@/hooks/use-toast';
 
 type ExtendedComment = Comment & {
 	votes: CommentVote[]
@@ -39,6 +41,7 @@ const PostComment: FC<PostCommentProps> = ({
 	const { data: session } = useSession()
 	const [isReplying, setIsReplying] = useState<boolean>()
 	const [input, setInput] = useState<string>('')
+	const { loginToast } = useCustomToast()
 
 	const { mutate: postComment, isLoading } = useMutation({
 		mutationFn: async ({ postId, text, replyToId }: CommentRequest) => {
@@ -51,6 +54,24 @@ const PostComment: FC<PostCommentProps> = ({
 			const { data } = await axios.patch('/api/subreddit/post/comment', payload)
 			return data
 		},
+		onError: (err) => {
+			if (err instanceof AxiosError) {
+				if (err.response?.status === 401) {
+					return loginToast()
+				}
+			}
+
+			return toast({
+				title: 'Uh oh! Something went wrong.',
+				description: 'There was an error. Please try again.',
+				variant: 'destructive',
+			})
+		},
+		onSuccess: () => {
+			router.refresh()
+			setInput('')
+			setIsReplying(false)
+		}
 	})
 
 	return (
