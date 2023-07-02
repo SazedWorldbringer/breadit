@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input'
 import { toast } from '@/hooks/use-toast'
 import { useCustomToast } from '@/hooks/use-custom-toast'
 
-const page = () => {
+const Page = () => {
 	const [input, setInput] = useState<string>('')
 	const router = useRouter()
 	const { loginToast } = useCustomToast()
@@ -105,4 +105,4 @@ const page = () => {
 	)
 }
 
-export default page
+export default Page
