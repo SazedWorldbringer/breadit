@@ -1,4 +1,4 @@
-import { ChevronLeft, LucideProps, X, User2, HomeIcon, ImageIcon, Link2, MessageSquare, ArrowBigUp, ArrowBigDown, Loader2 } from "lucide-react";
+import { ChevronLeft, LucideProps, X, User2, HomeIcon, ImageIcon, Link2, MessageSquare, ArrowBigUp, ArrowBigDown, Loader2, Users } from "lucide-react";
 
 export const Icons = {
 	logo: (props: LucideProps) => (
@@ -61,5 +61,6 @@ export const Icons = {
 	upvote: ArrowBigUp,
 	downvote: ArrowBigDown,
 	spinner: Loader2,
-	reply: MessageSquare
+	reply: MessageSquare,
+	users: Users
 }
