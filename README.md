@@ -19,3 +19,5 @@ Rename `.env.example` to `.env` and update with your own variables
 - Prisma for data modeling
 - Modern, beautifully designed components by shadcn-ui
 - Infinite scrolling using useIntersection and useInfiniteQuery hooks from mantine and tanstack query
+- Optimistic updates using tanstack query
+- Dynamic caching and streaming of post data using redis
