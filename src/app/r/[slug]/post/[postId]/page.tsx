@@ -12,6 +12,8 @@ import { formatTimeToNow } from '@/lib/utils'
 import EditorOutput from '@/components/editor-output'
 import { Skeleton } from '@/components/ui/skeleton'
 import CommentsSection from '@/components/comments-section'
+import { getAuthSession } from '@/lib/auth'
+import DeleteButton from '@/components/delete-button'
 
 interface PageProps {
 	params: {
@@ -23,6 +25,8 @@ export const dynamic = 'force-dynamic'
 export const fetchCache = 'force-no-store'
 
 const page = async ({ params }: PageProps) => {
+	const session = await getAuthSession();
+
 	const cachedPost = (await redis.hgetall(
 		`post:${params.postId}`
 	)) as CachedPost
@@ -42,6 +46,12 @@ const page = async ({ params }: PageProps) => {
 	}
 
 	if (!post && !cachedPost) return notFound()
+
+	const subredditTitle = (await db.subreddit.findFirst({
+		where: {
+			id: post?.subredditId ?? cachedPost.subredditId
+		}
+	}))?.name
 
 	return (
 		<div>
@@ -73,6 +83,13 @@ const page = async ({ params }: PageProps) => {
 					</h1>
 
 					<EditorOutput content={post?.content ?? cachedPost.content} />
+
+					{post?.author.id === session?.user.id && (
+						<DeleteButton
+							postId={post?.id ?? cachedPost.id}
+							subredditTitle={subredditTitle}
+						/>
+					)}
 
 					<Suspense fallback={<Skeleton className='w-full h-[20px] rounded-full' />}>
 						{/* @ts-expect-error server component */}
