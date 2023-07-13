@@ -82,6 +82,7 @@ export async function PATCH(req: Request) {
 					title: post.title,
 					currentVote: voteType,
 					createdAt: post.createdAt,
+					subredditId: post.subredditId
 				}
 
 				await redis.hset(`post: ${postId}`, cachePayload)
