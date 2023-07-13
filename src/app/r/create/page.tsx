@@ -85,19 +85,20 @@ const Page = () => {
 						/>
 					</div>
 				</div>
-				<div className='flex justify-end gap-4'>
+				<div className='flex justify-start flex-row-reverse gap-4'>
+					<Button
+						isLoading={isLoading}
+						disabled={input.length === 0}
+						onClick={() => createCommunity()}
+						tabIndex={0}
+					>
+						Create Community
+					</Button>
 					<Button
 						variant='subtle'
 						onClick={() => router.back()}
 					>
 						Cancel
-					</Button>
-					<Button
-						isLoading={isLoading}
-						disabled={input.length === 0}
-						onClick={() => createCommunity()}
-					>
-						Create Community
 					</Button>
 				</div>
 			</div>
